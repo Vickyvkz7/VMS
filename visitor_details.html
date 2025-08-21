@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Management Form</title>
+    <style>
+        /* CSS Variables for better theme management */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #0056b3;
+            --bg-color: #eef2f7;
+            --text-color: #444;
+            --label-color: #666;
+            --input-bg-color: #fff;
+            --input-border-color: #ccc;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --font-family: 'Arial', sans-serif;
+            --font-size: 16px;
+            --border-radius: 5px;
+            --heading-color: #4a90e2; /* New color for heading */
+            --heading-size: 32px; /* New size for heading */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--bg-color) url() no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 8px var(--shadow-color);
+            width: 90%;
+            max-width: 400px;
+            height: 100%;
+            overflow-y: auto;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .form-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .form-container::-webkit-scrollbar-thumb {
+            background-color: var(--primary-color);
+            border-radius: var(--border-radius);
+        }
+
+        .form-container__title {
+            padding: 10px;
+            text-align: center;
+            color: var(--heading-color); /* Apply new color */
+            font-size: var(--heading-size); /* Apply new size */
+            margin: 0;
+        }
+
+        .form-container__label {
+            display: block;
+            margin-top: 10px;
+            color: var(--label-color);
+            font-size: 14px;
+        }
+
+        .form-container__input, .form-container__select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid var(--input-border-color);
+            border-radius: var(--border-radius);
+            font-size: var(--font-size);
+            background-color: var(--input-bg-color);
+            transition: transform 0.3s;
+        }
+
+        .form-container__input::placeholder {
+            color: var(--label-color);
+        }
+
+        .form-container__input:hover, .form-container__select:hover {
+            transform: scale(1.05);
+        }
+
+        .form-container__button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: var(--font-size);
+            transition: background-color 0.3s;
+        }
+
+        .form-container__button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        #logout-button {
+            background-color: red;
+        }
+
+        #logout-button:hover {
+            background-color: #8b0a0a; /* A darker shade of red for hover effect */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                width: 90%;
+                padding: 20px;
+            }
+            .form-container__title {
+                font-size: 26px; /* Adjust for responsive design */
+            }
+            .form-container__input, .form-container__select {
+                font-size: 14px;
+                padding: 8px;
+            }
+            .form-container__button {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                width: 100%;
+                padding: 15px;
+            }
+            .form-container__title {
+                font-size: 22px; /* Adjust for responsive design */
+            }
+            .form-container__input, .form-container__select {
+                font-size: 12px;
+                padding: 6px;
+            }
+            .form-container__button {
+                font-size: 12px;
+                padding: 8px;
+            }
+        }
+
+        .form-container__button#crud-button {
+            background-color: rgb(9, 221, 9); /* Change to green */
+        }
+
+        .form-container__button#crud-button:hover {
+            background-color: darkgreen; /* Darker green on hover */
+        }
+
+        .form-container__button#dashboard-button {
+            background-color: #ffa500; /* Orange color for Dashboard button */
+        }
+
+        .form-container__button#dashboard-button:hover {
+            background-color: #cc8400; /* Darker orange on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2 class="form-container__title">Visitor Management Form</h2>
+    <form id="visitorForm" action="php/connect.php" method="POST" target="_self">
+            <label for="name" class="form-container__label">Name:</label>
+            <input type="text" id="name" name="name" class="form-container__input" placeholder="Enter your full name" required>
+
+            <label for="contact" class="form-container__label">Contact:</label>
+            <input type="text" id="contact" name="contact" class="form-container__input" placeholder="Enter your 10-digit phone number" required pattern="\d{10}" title="Please enter a valid 10-digit phone number" maxlength="10">
+
+            <label for="purpose" class="form-container__label">Purpose of Visit:</label>
+            <select id="purpose" name="purpose" class="form-container__select" required>
+                <option value="" disabled selected>Select Purpose</option>
+                <option value="To Meet Principal">To Meet Principal</option>
+                <option value="To Meet Dean">To Meet Dean</option>
+                <option value="To Meet HOD">To Meet HOD</option>
+                <option value="To Meet Student">To Meet Student</option>
+                <option value="Career Development Centre (CDC)">Career Development Centre (CDC)</option>
+                <option value="Synergy Council">Synergy Council</option>
+                <option value="For Admission Enquiry">For Admission Enquiry</option>
+                <option value="Corporate Visit">Corporate Visit</option>
+                <option value="Other Ventures">Others</option>
+            </select>
+
+            <div id="department" style="display: none;">
+                <label for="department-select" class="form-container__label">Select Department:</label>
+                <select id="department-select" name="department-select" class="form-container__select">
+                    <option value="" disabled selected>Select Department</option>
+                    <option value="Bcom CA">Bcom CA</option>
+                    <option value="Bcom PA">Bcom PA</option>
+                    <option value="Bcom BA">Bcom BA</option>
+                    <option value="Bcom IT">Bcom IT</option>
+                    <option value="Bcom">Bcom</option>
+                    <option value="Bcom CT">Bcom CT</option>
+                    <option value="Bcom B&I">Bcom B&I</option>
+                    <option value="BBA">BBA</option>
+                    <option value="BBA CA">BBA CA</option>
+                </select>
+            </div>
+
+            <div id="dean" style="display: none;">
+                <label for="dean-select" class="form-container__label">Select Dean's Department:</label>
+                <select id="dean-select" name="dean-select" class="form-container__select">
+                    <option value="" disabled selected>Select Department</option>
+                    <option value="Commerce">Commerce</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Management">Management</option>
+                </select>
+            </div>
+
+            <div id="cdc" style="display: none;">
+                <label for="cdc-select" class="form-container__label">Select CDC Program:</label>
+                <select id="cdc-select" name="cdc-select" class="form-container__select">
+                    <option value="" disabled selected>Select Program</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Placement">Placement</option>
+                    <option value="Career Counselling">Career Counselling</option>
+                </select>
+            </div>
+
+            <div id="synergy" style="display: none;">
+                <label for="synergy-select" class="form-container__label">Select Synergy Program:</label>
+                <select id="synergy-select" name="synergy-select" class="form-container__select">
+                    <option value="" disabled selected>Select Program</option>
+                    <option value="Mentorship">Mentorship</option>
+                    <option value="Networking">Networking</option>
+                    <option value="Skill Development">Skill Development</option>
+                </select>
+            </div>
+
+            <div id="admission-enquiry" style="display: none;">
+                <label for="program" class="form-container__label">Select Program:</label>
+                <select id="program" name="program" class="form-container__select">
+                    <option value="" disabled selected>Select Program</option>
+                    <option value="UG">UG</option>
+                    <option value="PG">PG</option>
+                </select>
+            
+                <label for="domain" class="form-container__label">Select Domain:</label>
+                <select id="domain" name="domain" class="form-container__select">
+                    <option value="" disabled selected>Select Domain</option>
+                    <option value="Computer-Science">School of Computer</option>
+                    <option value="Commerce">School of Commerce</option>
+                    <option value="Management">School of Management</option>
+                    <option value="CDF">School of CDF </option>
+                </select>
+            
+                <div id="course-container" style="display: none;">
+                    <label for="course" class="form-container__label">Select Course:</label>
+                    <select id="course" name="course" class="form-container__select">
+                        <!-- Courses will be populated dynamically based on domain and program -->
+                    </select>
+                </div>
+            
+                <label for="qualification" class="form-container__label">Select Qualification:</label>
+                <select id="qualification" name="qualification" class="form-container__select">
+                    <option value="" disabled selected>Select Qualification</option>
+                    <option value="10th">10th</option>
+                    <option value="12th">12th</option>
+                    <option value="Diploma">Diploma</option>
+                    <option value="UG">UG</option>
+                </select>
+            
+                <label for="percentage" class="form-container__label">Percentage:</label>
+                <div style="position: relative;">
+                    <input type="text" id="percentage" name="percentage" class="form-container__input" style="padding-right: 25px;" pattern="\d+(\.\d{1,2})?" title="Enter a valid percentage (e.g., 75 or 75.5)">
+                    <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--label-color);">%</span>
+                </div>
+            </div>
+
+            <label for="location" class="form-container__label">Location:</label>
+            <select id="location" name="location" class="form-container__select" required>
+                <option value="" disabled selected>Select District</option>
+                <option value="Ariyalur">Ariyalur</option>
+                <option value="Chengalpattu">Chengalpattu</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Coimbatore">Coimbatore</option>
+                <option value="Cuddalore">Cuddalore</option>
+                <option value="Dharmapuri">Dharmapuri</option>
+                <option value="Dindigul">Dindigul</option>
+                <option value="Erode">Erode</option>
+                <option value="Kallakurichi">Kallakurichi</option>
+                <option value="Kanchipuram">Kanchipuram</option>
+                <option value="Kanyakumari">Kanyakumari</option>
+                <option value="Karur">Karur</option>
+                <option value="Krishnagiri">Krishnagiri</option>
+                <option value="Madurai">Madurai</option>
+                <option value="Mayiladuthurai">Mayiladuthurai</option>
+                <option value="Nagapattinam">Nagapattinam</option>
+                <option value="Namakkal">Namakkal</option>
+                <option value="Nilgiris">Nilgiris</option>
+                <option value="Perambalur">Perambalur</option>
+                <option value="Pudukkottai">Pudukkottai</option>
+                <option value="Ramanathapuram">Ramanathapuram</option>
+                <option value="Ranipet">Ranipet</option>
+                <option value="Salem">Salem</option>
+                <option value="Sivaganga">Sivaganga</option>
+                <option value="Tenkasi">Tenkasi</option>
+                <option value="Thanjavur">Thanjavur</option>
+                <option value="Theni">Theni</option>
+                <option value="Thoothukudi">Thoothukudi</option>
+                <option value="Tiruchirappalli">Tiruchirappalli</option>
+                <option value="Tirunelveli">Tirunelveli</option>
+                <option value="Tirupathur">Tirupathur</option>
+                <option value="Tiruppur">Tiruppur</option>
+                <option value="Tiruvallur">Tiruvallur</option>
+                <option value="Tiruvannamalai">Tiruvannamalai</option>
+                <option value="Tiruvarur">Tiruvarur</option>
+                <option value="Vellore">Vellore</option>
+                <option value="Viluppuram">Viluppuram</option>
+                <option value="Virudhunagar">Virudhunagar</option>
+            </select>
+
+
+            <!-- Hidden fields for visit date and time (auto-filled) -->
+            <input type="hidden" id="visitDate" name="visitDate">
+            <input type="hidden" id="visitTime" name="visitTime">
+
+
+
+            <!-- Send Passkey button removed -->
+            <button type="submit" class="form-container__button submit-btn">Submit</button>
+    <style>
+    .send-passkey-btn {
+        background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+        color: #1a3c1a;
+        font-weight: bold;
+        border: none;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 12px rgba(67, 233, 123, 0.15);
+        transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        letter-spacing: 1px;
+        font-size: 17px;
+    }
+    .send-passkey-btn:hover {
+        background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+        color: #fff;
+        transform: scale(1.05);
+        box-shadow: 0 8px 24px rgba(67, 233, 123, 0.18);
+    }
+    .submit-btn {
+        background: linear-gradient(90deg, #1976d2 0%, #4a90e2 100%);
+        color: #fff;
+        font-weight: bold;
+        border: none;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
+        transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        letter-spacing: 1px;
+        font-size: 17px;
+    }
+    .submit-btn:hover {
+        background: linear-gradient(90deg, #4a90e2 0%, #1976d2 100%);
+        color: #fff;
+        transform: scale(1.05);
+        box-shadow: 0 8px 24px rgba(25, 118, 210, 0.18);
+    }
+    </style>
+
+            <button type="button" id="crud-button" class="form-container__button">Database</button>
+
+            <button type="button" id="dashboard-button" class="form-container__button">Dashboard</button>
+
+            <!-- <button type="button" id="logout-button" class="form-container__button">Logout</button> -->
+
+
+        </form>
+    </div>
+
+<script>
+    // Set default date and time on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const now = new Date();
+        // Format date as yyyy-mm-dd
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        document.getElementById('visitDate').value = `${yyyy}-${mm}-${dd}`;
+        // Format time as HH:MM (24hr)
+        const hh = String(now.getHours()).padStart(2, '0');
+        const min = String(now.getMinutes()).padStart(2, '0');
+        document.getElementById('visitTime').value = `${hh}:${min}`;
+    });
+    document.getElementById("visitorForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        // Convert FormData to JSON
+        const formData = new FormData(this);
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value || "";
+        });
+
+        // Generate a random 6-digit passkey
+        const passkey = Math.floor(100000 + Math.random() * 900000).toString();
+        data.passkey = passkey;
+
+        try {
+            const response = await fetch('php/connect.php?action=create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const resultText = await response.text();
+            let result;
+            try {
+                result = JSON.parse(resultText);
+            } catch (e) {
+                alert('Error: Unexpected response from server.');
+                return;
+            }
+            if (result.success) {
+                // Always send passkey to SMS
+                try {
+                    const smsResponse = await fetch('php/send_sms.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: data.name,
+                            phone: data.contact,
+                            passkey: result.passkey || passkey
+                        })
+                    });
+                    const smsResult = await smsResponse.text();
+                    alert(result.message + (result.passkey ? (" Passkey: " + result.passkey) : "") + "\n" + smsResult);
+                } catch (error) {
+                    alert(result.message + (result.passkey ? (" Passkey: " + result.passkey) : "") + "\nSMS sending failed: " + error);
+                }
+            } else {
+                alert('Error: ' + (result.message || 'Unknown error.'));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('There was an error submitting the form.');
+        }
+    });
+
+    document.getElementById("purpose").addEventListener("change", function() {
+        const purpose = document.getElementById("purpose").value;
+        const department = document.getElementById("department");
+        const dean = document.getElementById("dean");
+        const cdc = document.getElementById("cdc");
+        const synergy = document.getElementById("synergy");
+        const admissionEnquiry = document.getElementById("admission-enquiry");
+
+        // Helper function to toggle visibility and enable/disable fields
+        function toggleSection(section, show) {
+            section.style.display = show ? "block" : "none";
+            const inputs = section.querySelectorAll("select, input");
+            inputs.forEach(input => {
+                input.disabled = !show; // Enable fields when visible, disable otherwise
+            });
+        }
+
+        toggleSection(department, purpose === "To Meet HOD" || purpose === "To Meet Student");
+        toggleSection(dean, purpose === "To Meet Dean");
+        toggleSection(cdc, purpose === "Career Development Centre (CDC)");
+        toggleSection(synergy, purpose === "Synergy Council");
+        toggleSection(admissionEnquiry, purpose === "For Admission Enquiry");
+    });
+
+    document.getElementById("domain").addEventListener("change", function() {
+        const domain = document.getElementById("domain").value;
+        const program = document.getElementById("program").value;
+        const courseContainer = document.getElementById("course-container");
+        const courseSelect = document.getElementById("course");
+
+        courseContainer.style.display = "block";
+        courseSelect.disabled = false; // Enable the course select field
+
+        // Clear existing options
+        courseSelect.innerHTML = "";
+
+        // Add options based on domain and program
+        if (domain === "Computer-Science" && program === "UG") {
+            const options = [
+                { value: "BSc CS", text: "BSc Computer Science" },
+                { value: "BSc IT", text: "BSc Information Technology" },
+                { value: "BSc SE", text: "BSc Software Engineering" },
+            ];
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option.value;
+                optionElement.text = option.text;
+                courseSelect.appendChild(optionElement);
+            });
+        } else if (domain === "Computer-Science" && program === "PG") {
+            const options = [
+                { value: "MSc CS", text: "MSc Computer Science" },
+                { value: "MSc IT", text: "MSc Information Technology" },
+                { value: "MSc SE", text: "MSc Software Engineering" },
+            ];
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option.value;
+                optionElement.text = option.text;
+                courseSelect.appendChild(optionElement);
+            });
+        } else if (domain === "Commerce" && program === "UG") {
+            const options = [
+                { value: "BCom", text: "BCom" },
+                { value: "BCom CA", text: "BCom Computer Applications" },
+                { value: "BCom PA", text: "BCom Professional Accounting" },
+                { value: "Bcom", text: "Bcom " }
+            ];
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option.value;
+                optionElement.text = option.text;
+                courseSelect.appendChild(optionElement);
+            });
+        } else if (domain === "Commerce" && program === "PG") {
+            const options = [
+                { value: "MCom", text: "MCom" },
+                { value: "MCom CA", text: "MCom Computer Applications" },
+                { value: "MCom PA", text: "MCom Professional Accounting" },
+            ];
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option.value;
+                optionElement.text = option.text;
+                courseSelect.appendChild(optionElement);
+            });
+        } else if (domain === "Management" && program === "UG") {
+            const options = [
+                { value: "BBA", text: "BBA" },
+                { value: "BBA CA", text: "BBA Computer Applications" },
+                { value: "BBA PA", text: "BBA Professional Accounting" },
+            ];
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option.value;
+                optionElement.text = option.text;
+                courseSelect.appendChild(optionElement);
+            });
+        } else if (domain === "Management" && program === "PG") {
+            const options = [
+                { value: "MBA", text: "MBA" },
+                { value: "MBA CA", text: "MBA Computer Applications" },
+                { value: "MBA PA", text: "MBA Professional Accounting" },
+            ];
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option.value;
+                optionElement.text = option.text;
+                courseSelect.appendChild(optionElement);
+            });
+        } else if (domain === "CDF" && program === "UG") {
+            const options = [
+                { value: "BCDF", text: "BCDF" },
+                { value: "BCDF CA", text: "BCDF Computer Applications" },
+                { value: "BCDF PA", text: "BCDF Professional Accounting" },
+            ];
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option.value;
+                optionElement.text = option.text;
+                courseSelect.appendChild(optionElement);
+            });
+        } else if (domain === "CDF" && program === "PG") {
+            const options = [
+                { value: "MCDF", text: "MCDF" },
+                { value: "MCDF CA", text: "MCDF Computer Applications" },
+                { value: "MCDF PA", text: "MCDF Professional Accounting" },
+            ];
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option.value;
+                optionElement.text = option.text;
+                courseSelect.appendChild(optionElement);
+            });
+        }
+    });
+
+    document.getElementById("crud-button").addEventListener("click", function() {
+        window.location.href = 'crud_interface.html'; // Redirect to the CRUD interface
+    });
+
+    document.getElementById("dashboard-button").addEventListener("click", function() {
+        window.location.href = 'dashbord.html'; // Redirect to the dashboard page
+    });
+
+    document.getElementById("logout-button").addEventListener("click", function(){
+        window.location.href = 'login.html'; // Redirect to the login page
+    });
+
+    
+</script>
+</body>
+</html>

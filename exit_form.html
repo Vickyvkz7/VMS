@@ -1,0 +1,310 @@
+    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Exit Form</title>
+    <style>
+        :root {
+            --primary-color: #1976d2;
+            --secondary-color: #1565c0;
+            --accent-color: #43e97b;
+            --accent-color2: #38f9d7;
+            --danger-color: #e53935;
+            --danger-dark: #b71c1c;
+            --bg-gradient: linear-gradient(135deg, #1976d2 0%, #43e97b 100%);
+            --content-bg-color: rgba(255,255,255,0.98);
+            --input-bg-color: #f4f8fb;
+            --input-border-color: #90caf9;
+            --shadow-color: rgba(25, 118, 210, 0.13);
+            --border-radius: 18px;
+        }
+
+        
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: var(--bg-gradient);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .exit-container {
+            background: var(--content-bg-color);
+            padding: 40px 32px 32px 32px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 32px var(--shadow-color);
+            max-width: 420px;
+            width: 98vw;
+            margin: 60px auto 24px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 28px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            font-size: 2.1rem;
+            text-shadow: 0 2px 8px var(--shadow-color);
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            color: var(--primary-color);
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 13px 14px;
+            margin-top: 6px;
+            border: 1.5px solid var(--input-border-color);
+            border-radius: 10px;
+            font-size: 1.08rem;
+            background: var(--input-bg-color);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 4px var(--shadow-color);
+        }
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px 0;
+            margin-top: 26px;
+            background: linear-gradient(90deg, #1976d2 0%, #43e97b 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.13rem;
+            font-weight: 700;
+            letter-spacing: 1.1px;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s, transform 0.18s;
+        }
+        button[type="submit"]:hover {
+            background: linear-gradient(90deg, #1565c0 0%, #43e97b 100%);
+            color: #fff;
+            transform: scale(1.03);
+        }
+        .exit-note {
+            text-align: center;
+            color: #7a869a;
+            font-size: 13px;
+            margin-top: 10px;
+            margin-bottom: 2px;
+        }
+        .back-btn-custom {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 22px auto 0 auto;
+            background: var(--danger-color);
+            color: #fff;
+            font-size: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            width: 120px;
+            height: 38px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border: none;
+            transition: background 0.18s, color 0.18s, transform 0.18s;
+            text-align: center;
+        }
+        .back-btn-custom:hover {
+            background: var(--danger-dark);
+            color: #fff;
+            transform: scale(1.05);
+        }
+        .access-database {
+            margin-top: 28px;
+            text-align: center;
+            background: rgba(25, 118, 210, 0.07);
+            border-radius: 14px;
+            padding: 16px 8px 12px 8px;
+            box-shadow: 0 1px 6px var(--shadow-color);
+        }
+        .access-database p {
+            color: var(--primary-color);
+            font-size: 1rem;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .db-access-btn {
+            background: linear-gradient(90deg, #1565c0 0%, #1976d2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 0;
+            font-size: 1.08rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s, transform 0.18s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5em;
+            width: 65%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .db-access-btn:hover {
+            background: linear-gradient(90deg, #1976d2 0%, #43e97b 100%);
+            color: #fff;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="exit-container">
+        <h2>Visitor Exit</h2>
+        <form id="exitForm">
+            <label for="passkey">Enter Passkey:</label>
+            <input type="text" id="passkey" name="passkey" required maxlength="6" pattern="\d{6}" placeholder="Enter your 6-digit passkey">
+            <button type="submit">Submit Exit</button>
+        </form>
+        <div class="exit-note">Please enter the passkey you received during entry to record your exit time.</div>
+        <div id="exitMsg" style="text-align:center;margin-top:12px;font-weight:bold;"></div>
+        <style>
+        .msg-warning {
+            color: #b26a00 !important;
+            background: #fffbe6;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin: 10px auto 0 auto;
+            display: inline-block;
+            font-weight: 700;
+            font-size: 1.05em;
+            box-shadow: 0 1px 4px var(--shadow-color);
+        }
+        .access-database {
+            margin-top: 22px;
+            text-align: center;
+        }
+        .db-access-btn {
+            background: linear-gradient(90deg, #1565c0 0%, #1976d2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 0;
+            font-size: 1.08rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s, transform 0.18s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5em;
+            width: 65%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .db-access-btn:hover {
+            background: linear-gradient(90deg, #1976d2 0%, #43e97b 100%);
+            color: #fff;
+            transform: scale(1.05);
+        }
+        </style>
+    <button class="back-btn-custom" type="button" onclick="window.location.href='dashbord.html'" style="margin: 24px auto 0 auto; display: flex;">Back</button>
+
+      
+        <!-- <div class="access-database">
+            <p>If you want to access the database, click below:</p>
+            <button type="button" class="db-access-btn" onclick="window.location.href='crud_interface.html'">
+                <span style="vertical-align:middle; margin-right:6px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1c-1.657 0-3 1.12-3 2.5v9c0 1.38 1.343 2.5 3 2.5h8c1.657 0 3-1.12 3-2.5v-9C15 2.12 13.657 1 12 1H4zm0 1h8c1.104 0 2 .672 2 1.5S13.104 5 12 5H4C2.896 5 2 4.328 2 3.5S2.896 2 4 2zm8 12H4c-1.104 0-2-.672-2-1.5V6.708C2.313 7.13 3.13 7.5 4 7.5h8c.87 0 1.687-.37 2-0.792V12.5c0 .828-.896 1.5-2 1.5z"/></svg>
+                </span>
+                Database
+            </button>
+        </div> -->
+    </div>
+        
+    <script>
+        document.getElementById('exitForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const passkey = document.getElementById('passkey').value.trim();
+            const msgDiv = document.getElementById('exitMsg');
+            msgDiv.textContent = '';
+            if (!/^\d{6}$/.test(passkey)) {
+                msgDiv.textContent = 'Please enter a valid 6-digit passkey.';
+                msgDiv.style.color = 'red';
+                return;
+            }
+            const formData = new FormData();
+            formData.append('passkey', passkey);
+            fetch('./php/exit_form.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(text => {
+                let msg = text;
+                let color = 'red';
+                let success = false;
+                // Try to parse as JSON
+                try {
+                    const data = JSON.parse(text);
+                    msg = data.message || 'Unknown response.';
+                    color = data.success ? 'green' : 'red';
+                    success = !!data.success;
+                } catch (e) {
+                    // Fallback: try to extract only the JSON part if PHP code leaks
+                    const jsonMatch = text.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                        try {
+                            const data = JSON.parse(jsonMatch[0]);
+                            msg = data.message || 'Unknown response.';
+                            color = data.success ? 'green' : 'red';
+                            success = !!data.success;
+                        } catch (e2) {
+                            // Not valid JSON, show plain text
+                        }
+                    } else {
+                        // Check for plain text success
+                        if (text.toLowerCase().includes('success') || text.toLowerCase().includes('exit time recorded')) {
+                            msg = text;
+                            color = 'green';
+                            success = true;
+                        }
+                    }
+                }
+                // Always show warning style and redirect for 'exit time already recorded'
+                msgDiv.classList.remove('msg-warning');
+                const lowerText = text.toLowerCase();
+                let isAlreadyRecorded = lowerText.includes('exit time already recorded');
+                if (isAlreadyRecorded) {
+                    msgDiv.innerHTML = msg;
+                    msgDiv.classList.add('msg-warning');
+                    msgDiv.style.color = '';
+                } else {
+                    msgDiv.textContent = msg;
+                    msgDiv.style.color = color;
+                }
+                if (success || isAlreadyRecorded) {
+                    setTimeout(function() {
+                        window.location.href = 'crud_interface.html';
+                    }, 1400);
+                }
+            })
+            .catch(() => {
+                msgDiv.textContent = 'Server error. Please try again.';
+                msgDiv.style.color = 'red';
+            });
+        });
+       
+    </script>
+</body>
+</html>

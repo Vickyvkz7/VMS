@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Visitors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .crud-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .crud-container h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .crud-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            table-layout: fixed;
+        }
+
+        .crud-table th, .crud-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            word-wrap: break-word;
+        }
+
+        .crud-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .crud-table tr:hover td {
+            background-color: #f1f1f1;
+            color: #007bff;
+        }
+
+        .crud-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .crud-buttons button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .crud-buttons button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .crud-buttons .add-button {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .crud-buttons .add-button:hover {
+            background-color: #218838;
+        }
+
+        .crud-buttons .back-button {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .crud-buttons .back-button:hover {
+            background-color: #c82333;
+        }
+
+        .crud-buttons .export-button {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .crud-buttons .export-button:hover {
+            background-color: #138496;
+        }
+
+        .crud-buttons .print-all-button {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .crud-buttons .print-all-button:hover {
+            background-color: #5a6268;
+        }
+
+        .crud-buttons .logout-button {
+            background-color: #ff0000;
+            color: rgb(251, 248, 248);
+        }
+
+        .crud-buttons .logout-button:hover {
+            background-color: #a01f1f;
+        }
+
+        .crud-buttons button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .crud-table td button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+        }
+
+        .crud-table td button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .crud-table td button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .crud-table td button.edit-button {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .crud-table td button.edit-button:hover {
+            background-color: #138496;
+        }
+
+        .crud-table td button.delete-button {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .crud-table td button.delete-button:hover {
+            background-color: #c82333;
+        }
+
+        .crud-table td button.print-button {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .crud-table td button.print-button:hover {
+            background-color: #5a6268;
+        }
+
+        @media (max-width: 768px) {
+            .crud-container {
+                width: 95%;
+                padding: 15px;
+            }
+            .crud-table th, .crud-table td {
+                font-size: 14px;
+                padding: 8px;
+            }
+            .crud-buttons button {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .crud-container {
+                width: 100%;
+                padding: 10px;
+            }
+            .crud-table th, .crud-table td {
+                font-size: 12px;
+                padding: 6px;
+            }
+            .crud-buttons button {
+                font-size: 10px;
+                padding: 6px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="crud-container">
+        <h2>Manage Visitors</h2>
+        <table class="crud-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Purpose</th>
+                    <th>Visit Date</th>
+                    <th>Entry Time</th>
+                    <th>Exit Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="visitorTableBody">
+
+            </tbody>
+        </table>
+        <div class="crud-buttons">
+            <button class="add-button" onclick="addVisitor()">Add Visitor</button>
+            <button class="back-button" onclick="goBack()">Back</button>
+            <button class="export-button" onclick="exportToExcel()">Export to Excel</button>
+            <button class="print-all-button" onclick="printAll()">Print All</button>
+            <button class="exit-button" style="background-color:#ffc107;color:#222;" onclick="openExitForm()">Visitor Exit</buttonz>
+            <button class="logout-button" onclick="logout()">Logout</button>
+        </div>
+        <script>
+        function openExitForm() {
+            window.location.href = 'exit_form.html';
+        }
+        </script>
+    </div>
+
+    <div id="editModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+        <h3>Edit Visitor</h3>
+        <form id="editForm">
+            <label for="editName">Name:</label>
+            <input type="text" id="editName" required><br><br>
+            <label for="editContact">Contact:</label>
+            <input type="number" id="editContact" maxlength="10" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" required><br><br>
+            <label for="editPurpose">Purpose:</label>
+            <select id="editPurpose" required>
+                <option value="">Select Purpose</option>
+                <option value="To Meet Principal">To Meet Principal</option>
+                <option value="To Meet Dean">To Meet Dean</option>
+                <option value="To Meet HOD">To Meet HOD</option>
+                <option value="To Meet Student">To Meet Student</option>
+                <option value="Career Development Centre (CDC)">Career Development Centre (CDC)</option>
+                <option value="Synergy Council">Synergy Council</option>
+                <option value="For Admission Enquiry">For Admission Enquiry</option>
+                <option value="Corporate Visit">Corporate Visit</option>
+                <option value="Others">Others</option>
+            </select><br><br>
+            <!-- Removed Visit Date and Entry Time fields -->
+            <button type="button" onclick="saveEdit()">Save</button>
+            <button type="button" onclick="closeEditModal()">Cancel</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to format date as YYYY-MM-DD
+        function formatDate(date) {
+            const d = new Date(date);
+            let month = '' + (d.getMonth() + 1);
+            let day = '' + d.getDate();
+            const year = d.getFullYear();
+
+            if (month.length < 2) 
+                month = '0' + month;
+            if (day.length < 2) 
+                day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+
+        // Function to format time as HH:mm
+        function formatTime(date) {
+            const d = new Date(date);
+            let hours = '' + d.getHours();
+            let minutes = '' + d.getMinutes();
+
+            if (hours.length < 2) 
+                hours = '0' + hours;
+            if (minutes.length < 2) 
+                minutes = '0' + minutes;
+
+            return [hours, minutes].join(':');
+        }
+
+        function fetchVisitors() {
+            fetch('php/crud.php?action=read')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('visitorTableBody');
+                    tableBody.innerHTML = '';
+                    data.forEach(visitor => {
+                        const row = document.createElement('tr');
+                        // Use created_at for Visit Date and Entry Time
+                        let visitDate = 'N/A';
+                        let entryTime = 'N/A';
+                        let exitTime = 'N/A';
+                        if (visitor.created_at) {
+                            const dt = new Date(visitor.created_at.replace(' ', 'T'));
+                            visitDate = dt.toLocaleDateString('en-CA'); // yyyy-mm-dd
+                            // Format to 12-hour with AM/PM
+                            let hours = dt.getHours();
+                            let minutes = dt.getMinutes();
+                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                            hours = hours % 12;     
+                            hours = hours ? hours : 12; // the hour '0' should be '12'
+                            const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+                            entryTime = hours + ':' + minutesStr + ' ' + ampm;
+                        }
+                        if (visitor.exit_time && visitor.exit_time !== '00:00:00') {
+                            // Format exit time to 12-hour with AM/PM
+                            const [h, m, s] = visitor.exit_time.split(':');
+                            let hours = parseInt(h, 10);
+                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                            hours = hours % 12;
+                            hours = hours ? hours : 12;
+                            exitTime = hours + ':' + m + ' ' + ampm;
+                        }
+                        row.innerHTML = `
+                            <td>${visitor.passkey}</td>
+                            <td>${visitor.name || 'N/A'}</td>
+                            <td>${visitor.contact || 'N/A'}</td>
+                            <td>${visitor.purpose || 'N/A'}</td>
+                            <td>${visitDate}</td>
+                            <td>${entryTime}</td>
+                            <td>${exitTime}</td>
+                            <td>
+                                <button class="edit-button" onclick="editVisitor('${visitor.passkey}')">Edit</button>
+                                <button class="delete-button" onclick="deleteVisitor('${visitor.passkey}')">Delete</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching visitors:', error));
+        }
+
+        function addVisitor() {
+            alert('Please use the Visitor Management Form to add a visitor.');
+            window.location.href = 'visitor_details.html';
+        }
+
+        let currentEditId = null;
+
+function editVisitor(passkey) {
+    currentEditId = passkey;
+    fetch(`php/crud.php?action=read&passkey=${passkey}`)
+                .then(response => response.json())
+                .then(visitor => {
+                    document.getElementById('editName').value = visitor.name || '';
+                    document.getElementById('editContact').value = visitor.contact || '';
+                    // Set dropdown value for purpose
+                    document.getElementById('editPurpose').value = visitor.purpose || '';
+            // Removed Visit Date and Entry Time logic
+                    document.getElementById('editModal').style.display = 'block';
+                })
+                .catch(error => console.error('Error fetching visitor details:', error));
+        }
+
+        function saveEdit() {
+            const name = document.getElementById('editName').value;
+            const contact = document.getElementById('editContact').value;
+            const purpose = document.getElementById('editPurpose').value;
+            const updatedFields = {};
+            if (name) updatedFields.name = name;
+            if (contact) updatedFields.contact = contact;
+            if (purpose) updatedFields.purpose = purpose;
+            // Removed created_at update logic
+
+            if (Object.keys(updatedFields).length > 0) {
+                fetch(`php/crud.php?action=update&passkey=${currentEditId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedFields)
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert('Visitor updated successfully!');
+                    closeEditModal();
+                    fetchVisitors();
+                })
+                .catch(error => console.error('Error updating visitor:', error));
+            } else {
+                alert('No changes to save.');
+            }
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            currentEditId = null;
+        }
+
+function deleteVisitor(passkey) {
+    if (confirm('Are you sure you want to delete this visitor?')) {
+    fetch(`php/crud.php?action=delete&passkey=${passkey}`, { method: 'POST' })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert('Visitor deleted successfully!');
+                        fetchVisitors();
+                    })
+                    .catch(error => console.error('Error deleting visitor:', error));
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'visitor_details.html';
+        }
+
+        function exportToExcel() {
+            window.location.href = 'php/export_to_excel.php';
+        }
+
+        function logout() {
+            window.location.href = 'login.html';
+        }
+
+function printVisitor(passkey) {
+    fetch(`php/crud.php?action=read&passkey=${passkey}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Visitor not found');
+                    }
+                    return response.json();
+                })
+                .then(visitor => {
+                    if (!visitor || Object.keys(visitor).length === 0) {
+                        alert('No data found for the given ID.');
+                        return;
+                    }
+
+                    // Set default values if not provided
+                    const today = formatDate(new Date());
+                    const now = formatTime(new Date());
+
+                    const printDiv = document.createElement('div');
+                    printDiv.id = 'printDiv';
+                    printDiv.innerHTML = `
+                        <h2 style="color: #007bff; text-align: center;">Visitor Details</h2>
+                        <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                            <tr><th style="border: 1px solid #ccc; padding: 10px; background-color: #007bff; color: white;">Passkey</th><td style="border: 1px solid #ccc; padding: 10px;">${visitor.passkey || 'N/A'}</td></tr>
+                            <tr><th style="border: 1px solid #ccc; padding: 10px; background-color: #007bff; color: white;">Name</th><td style="border: 1px solid #ccc; padding: 10px;">${visitor.name || 'N/A'}</td></tr>
+                            <tr><th style="border: 1px solid #ccc; padding: 10px; background-color: #007bff; color: white;">Contact</th><td style="border: 1px solid #ccc; padding: 10px;">${visitor.contact || 'N/A'}</td></tr>
+                            <tr><th style="border: 1px solid #ccc; padding: 10px; background-color: #007bff; color: white;">Purpose</th><td style="border: 1px solid #ccc; padding: 10px;">${visitor.purpose || 'N/A'}</td></tr>
+                            <tr><th style="border: 1px solid #ccc; padding: 10px; background-color: #007bff; color: white;">Visit Date</th><td style="border: 1px solid #ccc; padding: 10px;">${visitor.visit_date || today}</td></tr>
+                            <tr><th style="border: 1px solid #ccc; padding: 10px; background-color: #007bff; color: white;">Entry Time</th><td style="border: 1px solid #ccc; padding: 10px;">${visitor.entry_time || now}</td></tr>
+                        </table>
+                        <button onclick="cancelPrint()">Cancel</button>
+                    `;
+                    document.body.appendChild(printDiv);
+
+                    const originalContents = document.body.innerHTML;
+                    document.body.innerHTML = printDiv.innerHTML;
+                    window.print();
+                    document.body.innerHTML = originalContents;
+
+                    const tempDiv = document.getElementById('printDiv');
+                    if (tempDiv) {
+                        tempDiv.remove();
+                    }
+                })
+                .catch(error => alert('Error: ' + error.message));
+        }
+
+        function cancelPrint() {
+            const tempDiv = document.getElementById('printDiv');
+            if (tempDiv) {
+                tempDiv.remove();
+            }
+            alert('Print cancelled.');
+        }
+
+        function printAll() {
+            const tableBody = document.getElementById('visitorTableBody');
+            if (!tableBody || tableBody.innerHTML.trim() === '') {
+                alert('No visitor details available to print.');
+                return;
+            }
+
+            const printDiv = document.createElement('div');
+            printDiv.id = 'printAllDiv';
+            printDiv.innerHTML = `
+                <h2 style="color: #007bff; text-align: center;">All Visitor Details</h2>
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                    <thead>
+                        <tr>
+                            <th style="border: 1px solid #ccc; padding: 10px; background-color: #007bff; color: white;">ID</th>
+                            <th style="border: 1px solid #ccc; padding: 10px; background-color: #007bff; color: white;">Name</th>
+                            <th style="border: 1px solid #ccc; padding: 10px; background-color: #007bff; color: white;">Contact</th>
+                            <th style="border: 1px solid #ccc; padding: 10px; background-color: #007bff; color: white;">Purpose</th>
+                            <th style="border: 1px solid #ccc; padding: 10px; background-color: #007bff; color: white;">Visit Date</th>
+                            <th style="border: 1px solid #ccc; padding: 10px; background-color: #007bff; color: white;">Entry Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableBody.innerHTML}
+                    </tbody>
+                </table>
+            `;
+            document.body.appendChild(printDiv);
+
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = printDiv.innerHTML;
+            window.print();
+            document.body.innerHTML = originalContents;
+
+            const tempDiv = document.getElementById('printAllDiv');
+            if (tempDiv) {
+                tempDiv.remove();
+            }
+        }
+
+        // Fetch visitors on page load
+        fetchVisitors();
+    </script>
+</body>
+</html>

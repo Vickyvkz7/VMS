@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPR College of Arts Science and Research</title>
+    <style>
+        :root {
+            --primary-color: #0288d1; /* Vibrant blue for primary elements */
+            --secondary-color: #0277bd; /* Darker blue for contrast */
+            --bg-color: #e1f5fe; /* Light blue background */
+            --header-bg-color: #0288d1; /* Blue background for the header and footer */
+            --footer-bg-color: #0288d1; /* Matching footer background with header */
+            --text-color: white; /* White text color for readability */
+            --font-family: 'Arial', sans-serif; /* Font family */
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-family, 'Arial', sans-serif);
+            background: var(--bg-image, url('assets/img/background.jpg')) no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-color, white);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: rgba(0, 40, 81, 0.8); /* Semi-transparent background */
+            text-align: center;
+            padding: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        nav {
+            background-color: rgba(0, 40, 81, 0.8); /* Semi-transparent background */
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: var(--secondary-color);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px; /* Add padding for spacing */
+            margin: 20px 0; /* Add gap between header and footer */
+        }
+
+        .carousel {
+            position: relative;
+            width: 90%; /* Reduce width for better spacing */
+            height: 100vh; /* Reduce height for better viewport fit */
+            overflow: hidden;
+            border-radius: 10px; /* Add slight border radius for a smoother look */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+        }
+
+        .carousel-images {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%; /* Ensure images fill the carousel height */
+        }
+
+        .carousel-images img {
+            width: 100%;
+            height: 100%; /* Ensure images fill the carousel height */
+            object-fit: cover; /* Crop images as necessary */
+            flex-shrink: 0;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .carousel-controls button {
+            background-color: rgba(0, 0, 0, 0.6);
+            border: none;
+            color: white;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 24px;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .carousel-controls button:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+
+        footer {
+            background-color: rgba(0, 40, 81, 0.8); /* Semi-transparent background */
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9rem;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        section {
+            padding: 40px 20px;
+            text-align: center;
+            background-color: var(--bg-color);
+            color: black;
+        }
+
+        section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        section p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .courses, .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .courses div, .gallery img {
+            width: 200px;
+            height: 150px;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery img {
+            object-fit: cover;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: var(--input-border, 1px solid #ccc);
+            border-radius: 5px;
+            background-color: var(--input-bg-color, rgba(255, 255, 255, 0.8)); /* Semi-transparent input fields */
+        }
+
+        .contact-form button {
+            background-color: var(--primary-color, #0288d1);
+            color: var(--text-color, white);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .contact-form button:hover {
+            background-color: var(--secondary-color, #0277bd);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        KPR College of Arts Science and Research
+    </header>
+    <nav>
+        <ul>
+            <li><a href="base.html">interface</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#courses">Courses</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div class="carousel">
+            <div class="carousel-images">
+                <img src="assets/img/kprcas (1).jpg" alt="Image 1">
+                <img src="assets/img/kpr(3).jpg" alt="Image 2">
+                <img src="assets/img/kpr.jpg" alt="Image 3">
+                <img src="assets/img/IMG_8783-1-2048x1365.jpg" alt="Image 4">
+                <img src="assets/img/Auditors-Conclave-2048x1082.jpg" alt="Image 5">
+            </div>
+            <div class="carousel-controls">
+                <button id="prev">&lt;</button>
+                <button id="next">&gt;</button>
+            </div>
+        </div>
+    </main>
+    <section id="about">
+        <h2>About Us</h2>
+        <p>Welcome to KPR College of Arts Science and Research. We are committed to providing quality education and fostering innovation.</p>
+    </section>
+    <section id="courses">
+        <h2>Our Courses</h2>
+        <div class="courses">
+            <div>Bachelor of Science</div>
+            <div>Bachelor of Arts</div>
+            <div>Master of Science</div>
+            <div>Master of Arts</div>
+        </div>
+    </section>
+    <section id="gallery">
+        <h2>Gallery</h2>
+        <div class="gallery">
+            <img src="assets/img/gallery1.jpg" alt="Gallery Image 1">
+            <img src="assets/img/gallery2.jpg" alt="Gallery Image 2">
+            <img src="assets/img/gallery3.jpg" alt="Gallery Image 3">
+        </div>
+    </section>
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <div class="contact-form">
+            <form>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your Name">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Your Email">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" placeholder="Your Message"></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </section>
+    <footer>
+        &copy; 2025 KPR College of Arts Science and Research
+    </footer>
+    <script>
+        const carouselImages = document.querySelector('.carousel-images');
+        const images = document.querySelectorAll('.carousel-images img');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+
+        let currentIndex = 0;
+
+        function updateCarousel() {
+            const offset = -currentIndex * 100;
+            carouselImages.style.transform = `translateX(${offset}%)`;
+        }
+
+        function showNextImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            updateCarousel();
+        }
+
+        function showPrevImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateCarousel();
+        }
+
+        nextButton.addEventListener('click', showNextImage);
+        prevButton.addEventListener('click', showPrevImage);
+
+        // Auto-slide every 5 seconds
+        setInterval(showNextImage, 2000);
+
+        // Add event listener for arrow keys
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight') {
+                showNextImage();
+            } else if (event.key === 'ArrowLeft') {
+                showPrevImage();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>KPR College Visitor Management System</title>
+    <style>
+        /* CSS Variables for better theme management */
+        :root {
+            --primary-color: #0d47a1; /* Dark blue for primary elements */
+            --secondary-color: #1976d2; /* Vibrant blue for contrast */
+            --bg-color: #ffffff; /* White background */
+            --nav-bg-color: #0d47a1; /* Dark blue for the nav bar */
+            --content-bg-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+            --footer-bg-color: #0d47a1; /* Dark blue for the footer */
+            --text-color: #000000; /* Black for readability */
+            --label-color: #37474f; /* Dark gray for labels */
+            --input-bg-color: #ffffff;
+            --input-border-color: #1976d2; /* Blue border for input fields */
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --font-family: 'Arial', sans-serif;
+            --font-size: 16px;
+            --border-radius: 8px; /* Smooth corners */
+            --heading-color: #0d47a1; /* Harmonized heading color */
+            --heading-size: 36px; /* Larger heading size */
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            color: var(--text-color);
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh; /* Ensure the body takes up the full viewport height */
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--nav-bg-color);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
+        nav .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Adjust spacing between logo image and text */
+            background-color: var(--nav-bg-color); /* Match the nav bar color */
+            padding: 5px 10px; /* Reduce padding for better fit */
+            box-shadow: none; /* Remove shadow for seamless integration */
+            border-radius: 0; /* Remove border radius */
+        }
+
+        nav .logo img {
+            height: 40px; /* Adjust logo image height */
+            border-radius: 0; /* Remove rounded corners */
+        }
+
+        nav .logo span {
+            color: #fff; /* Match text color with nav bar text */
+            font-size: 1.5rem; /* Adjust font size for better balance */
+            font-weight: bold;
+            letter-spacing: 0.5px; /* Slightly reduce letter spacing */
+            text-shadow: none; /* Remove text shadow for cleaner look */
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: var(--secondary-color);
+            z-index: -1;
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover::before {
+            width: 100%;
+        }
+
+        nav ul li a:hover {
+            color: #fff;
+        }
+
+        nav ul li a::after {
+            content: ''; 
+            position: absolute;
+            width: 0;
+            height: 3px;
+            background-color: var(--secondary-color);
+            left: 50%;
+            bottom: 0;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .background-container {
+            background-image: url('assets/img/kprcas.jpg'); /* Use a more specific path if needed */
+            background-size: cover; /* Cover the entire container */
+            background-position: bottom; /* Center the image */
+            background-repeat: no-repeat;
+            padding-top: 6rem; /* Add some padding to account for the nav bar */
+            flex: 1;
+            background-color: var(--bg-color);
+            position: relative; /* Make it a positioned container */
+            z-index: 0; /* Ensure it stays behind the hero content */
+            display: flex; /* Use flexbox for centering */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            padding-bottom: 3rem; /* Add padding at the bottom for spacing */
+        }
+
+        .hero {
+            background-color: transparent;
+            color: #0d47a1; /* Dark blue text */
+            text-align: center;
+            padding: 5rem 2rem; /* Adjusted padding for better spacing */
+            
+             margin-top: -3rem; /* Slightly move the hero section upward */
+            border-radius: var(--border-radius); /* Add smooth corners */
+            background: rgba(255, 255, 255, 0); /* Semi-transparent white background */
+            box-shadow: 0 8px 16px var(--shadow-color); /* Add a subtle shadow */
+            backdrop-filter: blur(10px); /* Add a blur effect for a modern look */
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            animation: fadeIn 2s ease;
+            position: relative; /* Ensure it stays centered within the container */
+            margin: 0 auto; /* Center horizontally */
+            max-width: 800px; /* Limit the width for better readability */
+            text-align: center; /* Center-align text */
+            background: rgba(255, 255, 255, 0.5); /* Increased transparency for better visibility of the background image */
+            padding: 3rem 2rem; /* Adjust padding for better spacing */
+            border-radius: var(--border-radius); /* Smooth corners */
+            box-shadow: 0 8px 16px var(--shadow-color); /* Subtle shadow */
+            backdrop-filter: blur(15px); /* Increased blur effect for a modern look */
+            z-index: 1; /* Ensure it stays above the background */
+            margin-bottom: 2rem; /* Add margin below the hero section */
+            animation: fadeInHero 1s ease 0.3s forwards; /* Reduced delay and duration */
+            opacity: 0; /* Start with hidden state */
+        }
+
+        .hero h1 {
+            font-size: 4rem; /* Larger font size for the heading */
+            margin: 0;
+            font-weight: bold; /* Make the heading bold */
+            animation: slideInDown 0.6s ease-in-out; /* Reduced duration */
+            color: var(--primary-color); /* Use primary color for the heading */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Subtle text shadow */
+            font-size: 3.5rem; /* Adjusted font size for better balance */
+            line-height: 1.2; /* Improve line spacing */
+            margin-bottom: 1rem; /* Add spacing below the heading */
+        }
+
+        .hero p {
+            font-size: 1.5rem; /* Slightly larger font size for the paragraph */
+            margin-top: 1.5rem; /* Add more spacing below the heading */
+            animation: slideInUp 0.8s ease-in-out; /* Reduced duration */
+            color: var(--text-color); /* Use text color for better readability */
+            font-size: 1.3rem; /* Adjusted font size for better readability */
+            line-height: 1.5; /* Improve line spacing */
+            margin-bottom: 2rem; /* Add spacing below the paragraph */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInHero {
+            from {
+                opacity: 0;
+                transform: translateY(20px); /* Slight upward movement */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0); /* Settle in place */
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: var(--footer-bg-color);
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 0.8rem 1.5rem; /* Adjust button padding */
+            font-size: 1rem; /* Slightly smaller font size for balance */
+        }
+
+        .btn:hover {
+            background-color: #0d47a1; /* Darker blue hover color */
+            color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px var(--shadow-color);
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+
+        @media (max-width: 768px) {
+            nav ul li {
+                margin-left: 1rem;
+            }
+
+            .hero {
+                padding: 4rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        :root {
+            --primary-color: #0288d1;
+            --secondary-color: #0277bd;
+            --bg-color: #e1f5fe;
+            --header-bg-color: #0288d1;
+            --footer-bg-color: #0288d1;
+            --text-color: white;
+            --font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        header, footer {
+            background-color: var(--header-bg-color);
+            text-align: center;
+            padding: 20px;
+            font-size: 1rem;
+            
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .logform, .login-container, .carousel, .features-section {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo" style="display:flex; align-items: center; gap: 15px; background-color: rgba(255, 255, 255, 0.8); padding: 10px 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 2px;">
+            <img src="assets/img/Logo.png" alt="KPR Logo" style="height: 60px;">
+            <span style="color: #0d47a1; font-size: 2rem; font-weight: bold; text-shadow: none; letter-spacing: 1px;">
+                
+            </span>
+        </div>
+        <ul>
+            <li><a href="home.html" target="_self">Home</a></li>
+        </ul>
+    </nav>
+    <div class="background-container">
+        <section class="hero">
+            <h1>Welcome to KPR College Visitor Management System</h1>
+            <p>Empowering a seamless visitor experience with innovative technology and warm hospitality.</p>
+            <button class="btn" onclick="window.location.href='login.html'">Get Started</button>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2025 KPR College of Arts Science and Research.</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Your JavaScript code here
+        }); 
+    </script>
+</body>
+</html>
