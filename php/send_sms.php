@@ -2,9 +2,10 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 use Twilio\Rest\Client;
 
-$account_sid = 'AC54dba7ab6babc06ed66ca929415bbe21';
-$auth_token = 'f148afc7411c2a4a01bcf60160fdaf3e';
-$twilio_number = '+15187540902';
+// Load Twilio credentials from environment variables
+$account_sid = getenv('TWILIO_ACCOUNT_SID');
+$auth_token = getenv('TWILIO_AUTH_TOKEN');
+$twilio_number = getenv('TWILIO_NUMBER');
 //-----------------------------------------
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
